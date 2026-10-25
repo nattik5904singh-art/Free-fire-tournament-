@@ -1,99 +1,41 @@
-<!DOCTYPE html>
-<html lang="hi">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FF Tournament</title>
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #10131c;
-  color: white;
-  text-align: center;
-}
-header {
-  background: #ff6a00;
-  padding: 25px 10px;
-}
-h1 { margin: 0; }
-.box {
-  background: #202635;
-  margin: 20px auto;
-  padding: 20px;
-  width: 85%;
-  max-width: 420px;
-  border-radius: 15px;
-}
-input {
-  box-sizing: border-box;
-  width: 100%;
-  padding: 12px;
-  margin: 8px 0;
-  border-radius: 6px;
-  border: none;
-}
-button {
-  background: #ff6a00;
-  color: white;
-  border: none;
-  padding: 13px;
-  width: 100%;
-  border-radius: 6px;
-  font-size: 16px;
-}
-.price {
-  font-size: 28px;
-  color: #ffb000;
-}
-</style>
-</head>
-<body>
-
-<header>
-  <h1>🔥 FF TOURNAMENT 🔥</h1>
-  <p>Squad Battle • Show Your Skills</p>
-</header>
-
-<div class="box">
-  <h2>🏆 Tournament Details</h2>
-  <p>Mode: Squad</p>
-  <p>Players: 4 per team</p>
-  <p>Entry Fee:</p>
-  <div class="price">₹20</div>
-</div>
-
-<div class="box">
-  <h2>📝 Squad Registration</h2>
-  <form id="registration">
-    <input name="team" placeholder="Team Name" required>
-    <input name="leader" placeholder="Team Leader Name" required>
-    <input name="uid" placeholder="Team Leader Free Fire UID" required>
-    <input name="mobile" type="tel" placeholder="Mobile Number" required>
-
-    <input name="player2" placeholder="Player 2 Name and UID" required>
-    <input name="player3" placeholder="Player 3 Name and UID" required>
-    <input name="player4" placeholder="Player 4 Name and UID" required>
-
-    <button type="submit">Register Team</button>
-  </form>
-  <p id="message"></p>
-</div>
-
-<div class="box">
-  <h2>💰 Entry Fee Payment</h2>
-  <p>Entry Fee: ₹20 per squad</p>
-  <p>भुगतान करने के लिए आयोजक से आधिकारिक UPI QR Code प्राप्त करें।</p>
-  <p>भुगतान की पुष्टि आयोजक द्वारा की जाएगी।</p>
-</div>
 
 <script>
-document.getElementById("registration").addEventListener("submit", function(e) {
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyT_RFw22nyXPILOu5lJW5PDVfSAYBrgwgEelLUxJkSY0GGWtWRDIPeTk1oRuCQd0iZ/exec";
+
+const form = document.getElementById("registration");
+const message = document.getElementById("message");
+const submitButton = form.querySelector('button[type="submit"]');
+
+form.addEventListener("submit", async function (e) {
   e.preventDefault();
-  document.getElementById("message").textContent =
-    "यह केवल फॉर्म का शुरुआती संस्करण है। आपकी जानकारी अभी सर्वर पर सेव नहीं हुई है।";
+
+  if (!form.reportValidity()) return;
+
+  submitButton.disabled = true;
+  submitButton.textContent = "Registering...";
+  message.textContent = "आपका रजिस्ट्रेशन भेजा जा रहा है...";
+
+  try {
+    const formData = new URLSearchParams(new FormData(form));
+
+    await fetch(WEB_APP_URL, {
+      method: "POST",
+      mode: "no-cors",
+      body: formData
+    });
+
+    message.textContent =
+      "रजिस्ट्रेशन अनुरोध भेज दिया गया है। कृपया आयोजक से पुष्टि करें।";
+
+    form.reset();
+
+  } catch (error) {
+    message.textContent =
+      "अनुरोध भेजने में समस्या हुई। इंटरनेट और Web App URL जाँचें।";
+  } finally {
+    submitButton.disabled = false;
+    submitButton.textContent = "Register Team";
+  }
 });
 </script>
 
-</body>
-</html>
