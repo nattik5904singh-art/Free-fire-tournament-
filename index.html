@@ -5,62 +5,192 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Jai Shree Ram FF Tournament</title>
+
 <style>
-body{margin:0;font-family:Arial,sans-serif;background:#10131c;color:white;text-align:center}
-header{background:#ff6a00;padding:25px 10px}
-.box{background:#202635;margin:20px auto;padding:20px;width:85%;max-width:420px;border-radius:15px}
-input{box-sizing:border-box;width:100%;padding:12px;margin:8px 0;border-radius:6px;border:0}
-button{background:#ff6a00;color:white;border:0;padding:13px;width:100%;border-radius:6px;font-size:16px}
-.price{font-size:28px;color:#ffb000}
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:Arial,sans-serif;
+  background:#10131c;color:white;text-align:center
+}
+header{background:#ff6a00;padding:24px 12px}
+header h1{margin:0;font-size:25px}
+nav{
+  display:flex;justify-content:center;gap:16px;
+  flex-wrap:wrap;padding:14px;background:#202635
+}
+nav a{color:white;text-decoration:none;font-weight:bold}
+.box{
+  background:#202635;margin:20px auto;padding:18px;
+  width:92%;max-width:700px;border-radius:14px
+}
+h2{color:#ff9a3c;margin-top:5px}
+input{
+  width:100%;padding:12px;margin:7px 0;
+  border:0;border-radius:6px
+}
+button{
+  background:#ff6a00;color:white;border:0;
+  padding:12px;border-radius:6px;font-size:16px;
+  cursor:pointer
+}
+form button{width:100%}
+button:disabled{opacity:.6}
+.price{font-size:26px;color:#ffb000}
+.note{font-size:13px;color:#ffd19c}
+.table-wrap{overflow-x:auto}
+table{
+  width:100%;border-collapse:collapse;
+  min-width:440px
+}
+th,td{padding:11px 8px;border-bottom:1px solid #41495b}
+th{background:#ff6a00;color:white}
+tr:nth-child(even){background:#293143}
+.rank{color:#ffd166;font-weight:bold}
+.status{color:#8ee6a1}
+.result-status{color:#ffcf70}
+footer{padding:20px;color:#b9bfce;font-size:13px}
 </style>
 </head>
+
 <body>
 <header>
-<h1>🔥 जय श्री राम FF TOURNAMENT 🔥</h1>
-<p>Squad Battle • Show Your Skills</p>
+  <h1>🔥 जय श्री राम FF TOURNAMENT 🔥</h1>
+  <p>Squad Battle • Show Your Skills</p>
 </header>
 
-<div class="box">
-<h2>🏆 Tournament Details</h2>
-<p>Mode: Squad</p>
-<p>Players: 4 per team</p>
-<p>Entry Fee: <span class="price">₹20</span></p>
-</div>
+<nav>
+  <a href="#details">Tournament</a>
+  <a href="#register">Register</a>
+  <a href="#leaderboard">Leaderboard</a>
+  <a href="#results">Results</a>
+</nav>
 
-<div class="box">
-<h2>📝 Squad Registration</h2>
-<form id="registration">
-<input name="team" placeholder="Team Name" required>
-<input name="leader" placeholder="Team Leader Name" required>
-<input name="uid" placeholder="Team Leader Free Fire UID" required>
-<input name="mobile" type="tel" placeholder="Mobile Number" required>
-<input name="player2" placeholder="Player 2 Name and UID" required>
-<input name="player3" placeholder="Player 3 Name and UID" required>
-<input name="player4" placeholder="Player 4 Name and UID" required>
-<button type="submit">Register Team</button>
-</form>
-<p id="message"></p>
-</div>
+<section class="box" id="details">
+  <h2>🏆 Tournament Details</h2>
+  <p>Mode: Squad</p>
+  <p>Players: 4 per team</p>
+  <p>Entry Fee: <span class="price">₹20</span></p>
+  <p class="note">मैच का समय और नियम आयोजक से कन्फर्म करें।</p>
+</section>
 
-<div class="box">
-<h2>💰 Entry Fee Payment</h2>
-<p>भुगतान की जानकारी और पुष्टि के लिए आयोजक से संपर्क करें।</p>
-</div>
+<section class="box" id="register">
+  <h2>📝 Squad Registration</h2>
+  <form id="registration">
+    <input name="team" placeholder="Team Name" required>
+    <input name="leader" placeholder="Team Leader Name" required>
+    <input name="uid" placeholder="Team Leader Free Fire UID" required>
+    <input name="mobile" type="tel" placeholder="Mobile Number" required>
+    <input name="player2" placeholder="Player 2 Name and UID" required>
+    <input name="player3" placeholder="Player 3 Name and UID" required>
+    <input name="player4" placeholder="Player 4 Name and UID" required>
+    <button type="submit">Register Team</button>
+  </form>
+  <p id="message" role="status"></p>
+</section>
+
+<section class="box" id="leaderboard">
+  <h2>🥇 Leaderboard</h2>
+  <p class="note">यह डेमो डेटा है, असली टूर्नामेंट की रैंकिंग नहीं।</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Team</th>
+          <th>Kills</th>
+          <th>Place Pts</th>
+          <th>Total Pts</th>
+        </tr>
+      </thead>
+      <tbody id="leaderboardBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="box" id="results">
+  <h2>📋 Match Results</h2>
+  <p class="note">नीचे दिए गए मैच केवल उदाहरण हैं।</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Match</th>
+          <th>स्थिति</th>
+          <th>विजेता</th>
+          <th>कुल किल्स</th>
+        </tr>
+      </thead>
+      <tbody id="resultsBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<footer>
+  Jai Shree Ram FF Tournament • Play Fair • Respect All Teams
+</footer>
 
 <script>
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyT_RFw22nyXPILOu5lJW5PDVfSAYBrgwgEelLUxJkSY0GGWtWRDIPeTk1oRuCQd0iZ/exec";
 
+// Demo scores: बाद में असली परिणामों से बदलें।
+const teams = [
+  {name:"Team Alpha", kills:12, place:10},
+  {name:"Team Bravo", kills:8, place:12},
+  {name:"Team Shadow", kills:9, place:5},
+  {name:"Team Kings", kills:4, place:8}
+];
+
+teams.forEach(team => {
+  team.total = team.kills + team.place;
+});
+
+teams.sort((a,b) => b.total - a.total);
+
+document.getElementById("leaderboardBody").innerHTML =
+  teams.map((team,index) => `
+    <tr>
+      <td class="rank">${index+1}</td>
+      <td>${escapeHTML(team.name)}</td>
+      <td>${team.kills}</td>
+      <td>${team.place}</td>
+      <td><strong>${team.total}</strong></td>
+    </tr>
+  `).join("");
+
+const matches = [
+  {name:"Match 1", status:"Demo", winner:"Team Alpha", kills:12},
+  {name:"Match 2", status:"Demo", winner:"Team Bravo", kills:8}
+];
+
+document.getElementById("resultsBody").innerHTML =
+  matches.map(match => `
+    <tr>
+      <td>${escapeHTML(match.name)}</td>
+      <td class="result-status">${escapeHTML(match.status)}</td>
+      <td>${escapeHTML(match.winner)}</td>
+      <td>${match.kills}</td>
+    </tr>
+  `).join("");
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;",
+    '"':"&quot;", "'":"&#39;"
+  }[char]));
+}
+
+// Google Sheet registration
 const form = document.getElementById("registration");
 const message = document.getElementById("message");
-const button = form.querySelector('button[type="submit"]');
+const submitButton = form.querySelector('button[type="submit"]');
 
 form.addEventListener("submit", async function(e) {
   e.preventDefault();
   if (!form.reportValidity()) return;
 
-  button.disabled = true;
-  button.textContent = "Sending...";
-  message.textContent = "रजिस्ट्रेशन भेजा जा रहा है...";
+  submitButton.disabled = true;
+  submitButton.textContent = "Sending...";
+  message.textContent = "रजिस्ट्रेशन अनुरोध भेजा जा रहा है...";
 
   try {
     await fetch(WEB_APP_URL, {
@@ -68,17 +198,18 @@ form.addEventListener("submit", async function(e) {
       mode: "no-cors",
       body: new URLSearchParams(new FormData(form))
     });
-    message.textContent = "अनुरोध भेज दिया गया। Google Sheet में जाँचकर पुष्टि करें।";
+
+    message.textContent =
+      "अनुरोध भेजा गया। आयोजक से पुष्टि करें और Google Sheet में जाँचें।";
     form.reset();
   } catch (error) {
-    message.textContent = "भेजने में समस्या हुई। कृपया दोबारा कोशिश करें।";
+    message.textContent =
+      "अनुरोध भेजने में समस्या हुई। इंटरनेट और Web App जाँचें।";
   } finally {
-    button.disabled = false;
-    button.textContent = "Register Team";
+    submitButton.disabled = false;
+    submitButton.textContent = "Register Team";
   }
 });
 </script>
 </body>
 </html>
-
-
