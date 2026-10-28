@@ -88,6 +88,51 @@ footer{padding:20px;color:#b9bfce;font-size:13px}
   <p id="message" role="status"></p>
 </section>
 
+<section id="registration">
+  <h2>Player Registration</h2>
+  <p>Jai Shree Ram FF Tournament</p>
+
+  <form
+    action="https://script.google.com/macros/s/AKfycbyT_RFw22nyXPILOu5lJW5PDVfSAYBrgwgEelLUxJkSY0GGWtWRDIPeTk1oRuCQd0iZ/exec"
+    method="POST"
+    target="registrationFrame"
+    id="registrationForm">
+
+    <label>खिलाड़ी का नाम</label>
+    <input name="playerName" required maxlength="60"
+      placeholder="अपना नाम लिखें">
+
+    <label>Free Fire UID</label>
+    <input name="uid" required maxlength="30"
+      inputmode="numeric" placeholder="अपनी UID लिखें">
+
+    <label>गेम में नाम (In-Game Name)</label>
+    <input name="gameName" required maxlength="60"
+      placeholder="गेम वाला नाम लिखें">
+
+    <label>मोबाइल नंबर</label>
+    <input name="mobile" required type="tel"
+      inputmode="numeric" pattern="[0-9]{10}"
+      maxlength="10" placeholder="10 अंकों का नंबर">
+
+    <button type="submit">Register Now</button>
+  </form>
+
+  <p id="registrationMessage" aria-live="polite"></p>
+
+  <iframe name="registrationFrame"
+    id="registrationFrame" title="Registration response"
+    style="display:none"></iframe>
+</section>
+
+<script>
+  document.getElementById("registrationForm")
+    .addEventListener("submit", function () {
+      document.getElementById("registrationMessage").textContent =
+        "रजिस्ट्रेशन भेज दिया गया है। पुष्टि के लिए Google Sheet चेक करें।";
+    });
+</script>
+
 <section class="box" id="leaderboard">
   <h2>🥇 Leaderboard</h2>
   <p class="note">यह डेमो डेटा है, असली टूर्नामेंट की रैंकिंग नहीं।</p>
