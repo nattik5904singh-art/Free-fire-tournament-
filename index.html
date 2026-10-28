@@ -152,53 +152,7 @@ footer{padding:20px;color:#b9bfce;font-size:13px}
   </div>
 </section>
 
-<section class="box" id="schedule">
-  <h2>📅 Match Schedule</h2>
-  <p class="note">अपनी टीम का मैच, तारीख और समय यहाँ देखें।</p>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Match</th>
-          <th>Team</th>
-          <th>Date</th>
-          <th>Time</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody id="scheduleBody">
-        <tr><td colspan="5">मैच लोड हो रहे हैं...</td></tr>
-      </tbody>
-    </table>
-  </div>
-</section>
 
-async function loadMatchSchedule() {
-  const body = document.getElementById("scheduleBody");
-
-  try {
-    const response = await fetch(WEB_APP_URL);
-    const data = await response.json();
-
-    if (!data.ok || !data.matches || data.matches.length === 0) {
-      body.innerHTML =
-        '<tr><td colspan="5">अभी कोई मैच निर्धारित नहीं है।</td></tr>';
-      return;
-    }
-
-    body.innerHTML = data.matches.map(m => `
-      <tr>
-        <td>${escapeSchedule(m.match)}</td>
-        <td>${escapeSchedule(m.team)}</td>
-        <td>${escapeSchedule(m.date || "तय नहीं")}</td>
-        <td>${escapeSchedule(m.time || "तय नहीं")}</td>
-        <td>${escapeSchedule(m.status || "Scheduled")}</td>
-      </tr>
-    `).join("");
-  } catch (error) {
-    body.innerHTML =
-      '<tr><td colspan="5">मैच लोड नहीं हुए। बाद में फिर कोशिश करें।</td></tr>';
-  }
 }
 
 function escapeSchedule(value) {
