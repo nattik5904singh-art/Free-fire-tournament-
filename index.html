@@ -132,6 +132,42 @@ footer{padding:20px;color:#b9bfce;font-size:13px}
 <script>
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyT_RFw22nyXPILOu5lJW5PDVfSAYBrgwgEelLUxJkSY0GGWtWRDIPeTk1oRuCQd0iZ/exec";
 
+async function loadMatchSchedule() {
+  const body = document.getElementById("scheduleBody");
+
+  try {
+    const response = await fetch(WEB_APP_URL);
+    const data = await response.json();
+
+    if (!data.ok || !data.matches || data.matches.length === 0) {
+      body.innerHTML =
+        '<tr><td colspan="5">अभी कोई मैच निर्धारित नहीं है।</td></tr>';
+      return;
+    }
+
+    body.innerHTML = data.matches.map(m => `
+      <tr>
+        <td>${escapeSchedule(m.match)}</td>
+        <td>${escapeSchedule(m.team)}</td>
+        <td>${escapeSchedule(m.date || "तय नहीं")}</td>
+        <td>${escapeSchedule(m.time || "तय नहीं")}</td>
+        <td>${escapeSchedule(m.status || "Scheduled")}</td>
+      </tr>
+    `).join("");
+  } catch (error) {
+    body.innerHTML =
+      '<tr><td colspan="5">मैच लोड नहीं हुए। बाद में फिर कोशिश करें।</td></tr>';
+  }
+}
+
+function escapeSchedule(value) {
+  const div = document.createElement("div");
+  div.textContent = String(value ?? "");
+  return div.innerHTML;
+}
+
+loadMatchSchedule();
+
 // Demo scores: बाद में असली परिणामों से बदलें।
 const teams = [
   {name:"Team Alpha", kills:12, place:10},
