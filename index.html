@@ -116,7 +116,41 @@ footer{padding:20px;color:#b9bfce;font-size:13px}
   document.getElementById("registrationForm")
     .addEventListener("submit", function () {
       document.getElementById("registrationMessage").textContent =
-        "रजिस्ट्रेशन भेज दिया गया है। पुष्टि के लिए Google Sheet चेक करें।";
+        
+<script>
+  const registrationForm =
+    document.getElementById("registrationForm");
+
+  const registrationMessage =
+    document.getElementById("registrationMessage");
+
+  window.addEventListener("message", function(event) {
+    const data = event.data;
+
+    if (!data || data.type !== "solo-registration") {
+      return;
+    }
+
+    registrationMessage.textContent = data.ok
+      ? "✅ " + data.message
+      : "❌ " + data.message;
+
+    registrationMessage.style.color = data.ok
+      ? "green"
+      : "red";
+
+    if (data.ok) {
+      registrationForm.reset();
+    }
+  });
+
+  registrationForm.addEventListener("submit", function() {
+    registrationMessage.textContent =
+      "रजिस्ट्रेशन भेजा जा रहा है...";
+    registrationMessage.style.color = "black";
+  });
+</script>
+
     });
 </script>
 
