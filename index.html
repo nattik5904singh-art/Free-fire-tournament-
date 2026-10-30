@@ -320,6 +320,327 @@ form.addEventListener("submit", async function(e) {
 </body>
 </html>
 
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jai Shree Ram FF Tournament</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:Arial,sans-serif;
+  background:#10131c;color:white;text-align:center
+}
+header{background:#ff6a00;padding:24px 12px}
+header h1{margin:0;font-size:25px}
+nav{
+  display:flex;justify-content:center;gap:16px;
+  flex-wrap:wrap;padding:14px;background:#202635
+}
+nav a{color:white;text-decoration:none;font-weight:bold}
+.box{
+  background:#202635;margin:20px auto;padding:18px;
+  width:92%;max-width:700px;border-radius:14px
+}
+h2{color:#ff9a3c;margin-top:5px}
+input{
+  width:100%;padding:12px;margin:7px 0;
+  border:0;border-radius:6px
+}
+button{
+  background:#ff6a00;color:white;border:0;
+  padding:12px;border-radius:6px;font-size:16px;
+  cursor:pointer
+}
+form button{width:100%}
+button:disabled{opacity:.6}
+.price{font-size:26px;color:#ffb000}
+.note{font-size:13px;color:#ffd19c}
+.table-wrap{overflow-x:auto}
+table{
+  width:100%;border-collapse:collapse;
+  min-width:440px
+}
+th,td{padding:11px 8px;border-bottom:1px solid #41495b}
+th{background:#ff6a00;color:white}
+tr:nth-child(even){background:#293143}
+.rank{color:#ffd166;font-weight:bold}
+.status{color:#8ee6a1}
+.result-status{color:#ffcf70}
+footer{padding:20px;color:#b9bfce;font-size:13px}
+</style>
+</head>
+
+<body>
+<header>
+  <h1>🔥 जय श्री राम FF TOURNAMENT 🔥</h1>
+  <p>Squad Battle • Show Your Skills</p>
+</header>
+
+<nav>
+  <a href="#details">Tournament</a>
+  <a href="#register">Register</a>
+  <a href="#leaderboard">Leaderboard</a>
+  <a href="#results">Results</a>
+</nav>
+
+<section class="box" id="details">
+  <h2>🏆 Tournament Details</h2>
+  <p>Mode: Squad</p>
+  <p>Players: 4 per team</p>
+  <p>Entry Fee: <span class="price">₹20</span></p>
+  <p class="note">मैच का समय और नियम आयोजक से कन्फर्म करें।</p>
+</section>
+
+
+
+<section id="registration">
+  <h2>Player Registration</h2>
+  <p>Jai Shree Ram FF Tournament</p>
+
+  <form
+    action="https://script.google.com/macros/s/AKfycbyT_RFw22nyXPILOu5lJW5PDVfSAYBrgwgEelLUxJkSY0GGWtWRDIPeTk1oRuCQd0iZ/exec"
+    method="POST"
+    target="registrationFrame"
+    id="registrationForm">
+
+    <label>खिलाड़ी का नाम</label>
+    <input name="playerName" required maxlength="60"
+      placeholder="अपना नाम लिखें">
+
+    <label>Free Fire UID</label>
+    <input name="uid" required maxlength="30"
+      inputmode="numeric" placeholder="अपनी UID लिखें">
+
+    <label>गेम में नाम (In-Game Name)</label>
+    <input name="gameName" required maxlength="60"
+      placeholder="गेम वाला नाम लिखें">
+
+    <label>मोबाइल नंबर</label>
+    <input name="mobile" required type="tel"
+      inputmode="numeric" pattern="[0-9]{10}"
+      maxlength="10" placeholder="10 अंकों का नंबर">
+
+    <button type="submit">Register Now</button>
+  </form>
+
+  <p id="registrationMessage" aria-live="polite"></p>
+
+  <iframe name="registrationFrame"
+    id="registrationFrame" title="Registration response"
+    style="display:none"></iframe>
+</section>
+
+<script>
+  document.getElementById("registrationForm")
+    .addEventListener("submit", function () {
+      document.getElementById("registrationMessage").textContent =
+        
+<script>
+  const registrationForm =
+    document.getElementById("registrationForm");
+
+  const registrationMessage =
+    document.getElementById("registrationMessage");
+
+  window.addEventListener("message", function(event) {
+    const data = event.data;
+
+    if (!data || data.type !== "solo-registration") {
+      return;
+    }
+
+    registrationMessage.textContent = data.ok
+      ? "✅ " + data.message
+      : "❌ " + data.message;
+
+    registrationMessage.style.color = data.ok
+      ? "green"
+      : "red";
+
+    if (data.ok) {
+      registrationForm.reset();
+    }
+  });
+
+  registrationForm.addEventListener("submit", function() {
+    registrationMessage.textContent =
+      "रजिस्ट्रेशन भेजा जा रहा है...";
+    registrationMessage.style.color = "black";
+  });
+
+</script>
+
+<section class="box" id="leaderboard">
+  <h2>🥇 Leaderboard</h2>
+  <p class="note">यह डेमो डेटा है, असली टूर्नामेंट की रैंकिंग नहीं।</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Team</th>
+          <th>Kills</th>
+          <th>Place Pts</th>
+          <th>Total Pts</th>
+        </tr>
+      </thead>
+      <tbody id="leaderboardBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<section id="soloPlayers">
+  <h2>Solo Registered Players</h2>
+  <p id="playerCount">खिलाड़ी लोड हो रहे हैं...</p>
+  <div id="playersList"></div>
+</section>
+
+<section class="box" id="results">
+  <h2>📋 Match Results</h2>
+  <p class="note">नीचे दिए गए मैच केवल उदाहरण हैं।</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Match</th>
+          <th>स्थिति</th>
+          <th>विजेता</th>
+          <th>कुल किल्स</th>
+        </tr>
+      </thead>
+      <tbody id="resultsBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<footer>
+  Jai Shree Ram FF Tournament • Play Fair • Respect All Teams
+</footer>
+
+<script>
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyT_RFw22nyXPILOu5lJW5PDVfSAYBrgwgEelLUxJkSY0GGWtWRDIPeTk1oRuCQd0iZ/exec";
+
+async function loadMatchSchedule() {
+  const body = document.getElementById("scheduleBody");
+
+  try {
+    const response = await fetch(WEB_APP_URL);
+    const data = await response.json();
+
+    if (!data.ok || !data.matches || data.matches.length === 0) {
+      body.innerHTML =
+        '<tr><td colspan="5">अभी कोई मैच निर्धारित नहीं है।</td></tr>';
+      return;
+    }
+
+    body.innerHTML = data.matches.map(m => `
+      <tr>
+        <td>${escapeSchedule(m.match)}</td>
+        <td>${escapeSchedule(m.team)}</td>
+        <td>${escapeSchedule(m.date || "तय नहीं")}</td>
+        <td>${escapeSchedule(m.time || "तय नहीं")}</td>
+        <td>${escapeSchedule(m.status || "Scheduled")}</td>
+      </tr>
+    `).join("");
+  } catch (error) {
+    body.innerHTML =
+      '<tr><td colspan="5">मैच लोड नहीं हुए। बाद में फिर कोशिश करें।</td></tr>';
+  }
+}
+
+function escapeSchedule(value) {
+  const div = document.createElement("div");
+  div.textContent = String(value ?? "");
+  return div.innerHTML;
+}
+
+loadMatchSchedule();
+
+// Demo scores: बाद में असली परिणामों से बदलें।
+const teams = [
+  {name:"Team Alpha", kills:12, place:10},
+  {name:"Team Bravo", kills:8, place:12},
+  {name:"Team Shadow", kills:9, place:5},
+  {name:"Team Kings", kills:4, place:8}
+];
+
+teams.forEach(team => {
+  team.total = team.kills + team.place;
+});
+
+teams.sort((a,b) => b.total - a.total);
+
+document.getElementById("leaderboardBody").innerHTML =
+  teams.map((team,index) => `
+    <tr>
+      <td class="rank">${index+1}</td>
+      <td>${escapeHTML(team.name)}</td>
+      <td>${team.kills}</td>
+      <td>${team.place}</td>
+      <td><strong>${team.total}</strong></td>
+    </tr>
+  `).join("");
+
+const matches = [
+  {name:"Match 1", status:"Demo", winner:"Team Alpha", kills:12},
+  {name:"Match 2", status:"Demo", winner:"Team Bravo", kills:8}
+];
+
+document.getElementById("resultsBody").innerHTML =
+  matches.map(match => `
+    <tr>
+      <td>${escapeHTML(match.name)}</td>
+      <td class="result-status">${escapeHTML(match.status)}</td>
+      <td>${escapeHTML(match.winner)}</td>
+      <td>${match.kills}</td>
+    </tr>
+  `).join("");
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;",
+    '"':"&quot;", "'":"&#39;"
+  }[char]));
+}
+
+// Google Sheet registration
+const form = document.getElementById("registration");
+const message = document.getElementById("message");
+const submitButton = form.querySelector('button[type="submit"]');
+
+form.addEventListener("submit", async function(e) {
+  e.preventDefault();
+  if (!form.reportValidity()) return;
+
+  submitButton.disabled = true;
+  submitButton.textContent = "Sending...";
+  message.textContent = "रजिस्ट्रेशन अनुरोध भेजा जा रहा है...";
+
+  try {
+    await fetch(WEB_APP_URL, {
+      method: "POST",
+      mode: "no-cors",
+      body: new URLSearchParams(new FormData(form))
+    });
+
+    message.textContent =
+      "अनुरोध भेजा गया। आयोजक से पुष्टि करें और Google Sheet में जाँचें।";
+    form.reset();
+  } catch (error) {
+    message.textContent =
+      "अनुरोध भेजने में समस्या हुई। इंटरनेट और Web App जाँचें।";
+  } finally {
+    submitButton.disabled = false;
+    submitButton.textContent = "Register Team";
+  }
+});
+</script>
+</body>
+</html>
+</script>
 const WEB_APP_URL =
 "https://script.google.com/macros/s/AKfycbyT_RFw22nyXPILOu5lJW5PDVfSAYBrgwgEelLUxJkSY0GGWtWRDIPeTk1oRuCQd0iZ/exec";
 
@@ -358,5 +679,4 @@ async function loadSoloPlayers() {
     list.textContent = error.message;
   }
 }
-
-loadSoloPlayers();
+</script>
