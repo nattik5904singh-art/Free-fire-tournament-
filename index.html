@@ -319,3 +319,44 @@ form.addEventListener("submit", async function(e) {
 </script>
 </body>
 </html>
+
+const WEB_APP_URL =
+"https://script.google.com/macros/s/AKfycbyT_RFw22nyXPILOu5lJW5PDVfSAYBrgwgEelLUxJkSY0GGWtWRDIPeTk1oRuCQd0iZ/exec";
+
+async function loadSoloPlayers() {
+  const list = document.getElementById("playersList");
+  const count = document.getElementById("playerCount");
+
+  try {
+    const response = await fetch(WEB_APP_URL);
+    const data = await response.json();
+
+    if (!data.ok) throw new Error(data.message);
+
+    count.textContent =
+      "कुल खिलाड़ी: " + data.players.length + " / 48";
+
+    if (data.players.length === 0) {
+      list.textContent = "अभी कोई खिलाड़ी रजिस्टर नहीं हुआ है।";
+      return;
+    }
+
+    list.innerHTML = "";
+
+    data.players.forEach((player, index) => {
+      const card = document.createElement("div");
+      card.textContent =
+        (index + 1) + ". " + player.name +
+        " | UID: " + player.uid +
+        " | " + player.gameName;
+
+      list.appendChild(card);
+    });
+
+  } catch (error) {
+    count.textContent = "खिलाड़ी लोड नहीं हुए।";
+    list.textContent = error.message;
+  }
+}
+
+loadSoloPlayers();
