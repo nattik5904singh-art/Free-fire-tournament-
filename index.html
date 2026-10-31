@@ -598,48 +598,6 @@ document.getElementById("resultsBody").innerHTML =
       <td>${match.kills}</td>
     </tr>
   `).join("");
-
-function escapeHTML(value) {
-  return String(value).replace(/[&<>"']/g, char => ({
-    "&":"&amp;", "<":"&lt;", ">":"&gt;",
-    '"':"&quot;", "'":"&#39;"
-  }[char]));
-}
-
-// Google Sheet registration
-const form = document.getElementById("registration");
-const message = document.getElementById("message");
-const submitButton = form.querySelector('button[type="submit"]');
-
-form.addEventListener("submit", async function(e) {
-  e.preventDefault();
-  if (!form.reportValidity()) return;
-
-  submitButton.disabled = true;
-  submitButton.textContent = "Sending...";
-  message.textContent = "रजिस्ट्रेशन अनुरोध भेजा जा रहा है...";
-
-  try {
-    await fetch(WEB_APP_URL, {
-      method: "POST",
-      mode: "no-cors",
-      body: new URLSearchParams(new FormData(form))
-    });
-
-    message.textContent =
-      "अनुरोध भेजा गया। आयोजक से पुष्टि करें और Google Sheet में जाँचें।";
-    form.reset();
-  } catch (error) {
-    message.textContent =
-      "अनुरोध भेजने में समस्या हुई। इंटरनेट और Web App जाँचें।";
-  } finally {
-    submitButton.disabled = false;
-    submitButton.textContent = "Register Team";
-  }
-});
-</script>
-</body>
-</html>
 <script>
 const WEB_APP_URL =
 "https://script.google.com/macros/s/AKfycbyT_RFw22nyXPILOu5lJW5PDVfSAYBrgwgEelLUxJkSY0GGWtWRDIPeTk1oRuCQd0iZ/exec";
